@@ -26,25 +26,22 @@ const Stock = (props) => {
   };
 
   const handleTradeConfirmation = () => {
-      console.log('place the actual call for portfolio change');
-      //TODO: Place call to update Positions
       const dataObj = {
-          userIdentifier: '1234',
+          userIdentifier: sessionStorage.getItem('userId'),
+          stockSymbol: props.data.symbol,
           tradeType: tradeType,
           quantity: quantity
       }
-      console.log(dataObj)
       const formSubmitURL = process.env.REACT_APP_HTTP_API_URL + '/setPosition';
         fetch(formSubmitURL, {
             method: 'POST',
             body: JSON.stringify(dataObj)
         })
         .then((response) => {
-            console.log('inside the data block', response);
             return response.json();
         })
         .catch(data => {
-            console.log(data);
+            console.error(data);
         })
   };
 
