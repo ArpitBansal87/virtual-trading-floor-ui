@@ -2,6 +2,9 @@ import React from "react";
 import useSignInForm from "../hooks/CustomHooks";
 import * as constants from "./../constants/URLConstants";
 import { useHistory } from "react-router-dom";
+import TextField from "@material-ui/core/TextField";
+import Button from "@material-ui/core/Button";
+import "./../css/signInPage.css";
 
 const SignUp = () => {
   let history = useHistory();
@@ -32,43 +35,49 @@ const SignUp = () => {
 
   return (
     <form onSubmit={handleSubmit}>
-      <div className="signUp">
-        <label>First Name</label>
-        <input
+      <div className="form-element">
+        <TextField
           type="text"
           name="firstName"
           required
+          label="First Name"
           onChange={handleInputChange}
           value={inputs.firstName}
         />
-        <label>Last Name</label>
-        <input
+      </div>
+      <div className="form-element">
+        <TextField
           type="text"
           name="lastName"
           required
+          label="Last Name"
           onChange={handleInputChange}
           value={inputs.lastName}
         />
       </div>
-      <div>
-        <label>User Name</label>
-        <input
+      <div className="form-element">
+        <TextField
           type="text"
           name="userName"
+          label="Username"
           onChange={handleInputChange}
           value={inputs.userName}
         />
       </div>
-      <div>
-        <label>Password</label>
-        <input
+      <div className="form-element">
+        <TextField
           type="password"
           name="password"
+          label="Password"
           onChange={handleInputChange}
           value={inputs.password}
         />
       </div>
-      <button type="submit">Sign Up</button>
+      <div className="form-element">
+        <Button variant="contained" color="primary" type="submit">
+          Sign Up
+        </Button>
+      </div>
     </form>
   );
 };
