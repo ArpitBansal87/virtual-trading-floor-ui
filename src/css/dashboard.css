@@ -1,0 +1,13 @@
+.navBar-container{
+    display: flex;
+    justify-content: space-between;
+}
+.pl-20 {
+    padding-left: 20px;
+}
+.flexBox{
+    display: flex;;
+}
+li {    
+    list-style: none
+}
