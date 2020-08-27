@@ -1,6 +1,7 @@
 import React from 'react';
 import UserPortfolioListing from "./usersPortfolioListing";
 import StockMarket from './stockMarket';
+import PortfolioListing from './portfolioListing';
 
 const Dashboard = () => {
     return (
@@ -11,6 +12,9 @@ const Dashboard = () => {
             </div>
             <div className="stocks-listing">
                 <StockMarket></StockMarket>
+            </div>
+            <div className="portfolio-listing">
+                <PortfolioListing></PortfolioListing>
             </div>
         </div>
     )

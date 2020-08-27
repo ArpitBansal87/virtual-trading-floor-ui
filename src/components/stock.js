@@ -22,7 +22,7 @@ const Stock = (props) => {
   const cancelTrade = () => {
     setQuantity(0);  
     setOpenForTrade(!openForTrade);
-    setTradeType(1);
+    setTradeType("BUY");
   };
 
   const handleTradeConfirmation = () => {
@@ -30,7 +30,9 @@ const Stock = (props) => {
           userIdentifier: sessionStorage.getItem('userId'),
           stockSymbol: props.data.symbol,
           tradeType: tradeType,
-          quantity: quantity
+          quantity: quantity,
+          buyPrice: props.data.sharePrice,
+          totalShares: props.data.totalShares
       }
       const formSubmitURL = process.env.REACT_APP_HTTP_API_URL + '/setPosition';
         fetch(formSubmitURL, {
@@ -38,9 +40,11 @@ const Stock = (props) => {
             body: JSON.stringify(dataObj)
         })
         .then((response) => {
+            cancelTrade();
             return response.json();
         })
         .catch(data => {
+            cancelTrade();
             console.error(data);
         })
   };

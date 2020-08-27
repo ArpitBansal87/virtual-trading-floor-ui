@@ -4,22 +4,18 @@ import * as constants from "./../constants/URLConstants";
 import { useHistory } from "react-router-dom";
 
 const SignUp = () => {
-  console.log(constants.AUTHENTICATION_URL.SIGN_UP);
-
   let history = useHistory();
   const signUp = () => {
-    console.log(constants);
     const formSubmitURL =
       process.env.REACT_APP_HTTP_API_URL + constants.AUTHENTICATION_URL.SIGN_UP;
     fetch(formSubmitURL, {
       method: "POST",
-      body: {
+      body: JSON.stringify({
         firstName: inputs.firstName,
         lastName: inputs.lastName,
-        email: inputs.email,
-        usserName: inputs.userName,
+        userName: inputs.userName,
         password: inputs.password,
-      },
+      }),
     })
       .then((response) => {
         return response.json();
@@ -30,7 +26,7 @@ const SignUp = () => {
   };
 
   const { inputs, handleInputChange, handleSubmit } = useSignInForm(
-    { firstName: "", lastName: "", email: "", userName: "", password: "" },
+    { firstName: "", lastName: "", userName: "", password: "" },
     signUp
   );
 
@@ -52,16 +48,6 @@ const SignUp = () => {
           required
           onChange={handleInputChange}
           value={inputs.lastName}
-        />
-      </div>
-      <div>
-        <label>Email Address</label>
-        <input
-          type="email"
-          name="email"
-          required
-          onChange={handleInputChange}
-          value={inputs.email}
         />
       </div>
       <div>
