@@ -16,9 +16,9 @@ const useStyles = makeStyles({
       flexWrap: 'wrap',
   },
   liValue: {
-      maxHeight: 200,
-      maxWidth: 200
-  }
+      maxHeight: 400,
+      maxWidth: 400
+  },
 });
 
 const StockMarket = () => {
@@ -47,7 +47,7 @@ const StockMarket = () => {
           </li>
         ) : (
           stocksList.response.map((stock, index) => (
-            <li key={index className={classes.}>
+            <li key={index} className={classes.liValue}>
               <Stock data={stock} />
             </li>
           ))
