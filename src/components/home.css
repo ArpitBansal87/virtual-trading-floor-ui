@@ -18,7 +18,7 @@
     z-index: 1;
     display: block;
     position: absolute;
-    opacity: 20%;
+    opacity: 0.20;
 }
 .home-page-block::before{
     background: rgba(0, 0, 0, 0.5);
@@ -35,7 +35,7 @@
     position: absolute;
     right: 1rem;
     bottom: 1rem;
-    opacity: 50%;
+    opacity: 0.50;
     
 }
 .home-page-block blockquote p {
@@ -46,10 +46,10 @@
 }
 .home-page-block blockquote p a{
     color: inherit;
-    opacity: 40%;
+    opacity: 0.40;
     text-decoration: underline;
 }
 .home-page-block blockquote p a:hover{
-    opacity: 100%;
+    opacity: 1;
 }
 
