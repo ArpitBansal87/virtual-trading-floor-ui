@@ -22,7 +22,6 @@ const PortfolioListing = () => {
 
   return (
     <div>
-      <h2>Value for stock Market</h2>
       <ul>
         {portfolioStocks.response.length === 0 ? (
           <li>

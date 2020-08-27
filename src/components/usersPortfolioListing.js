@@ -26,7 +26,7 @@ const UserPortfolioListing = (props) => {
 
   return (
     <>
-      <h2>This is user portfolio listing</h2>
+      <h2>List of Users</h2>
       <ul>
           {
             userList.response.length === 0 ? 
