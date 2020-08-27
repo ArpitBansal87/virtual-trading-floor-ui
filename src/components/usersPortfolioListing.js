@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import * as constants from "./../constants/URLConstants";
+import { w3cwebsocket as W3CWebSocket } from "websocket";
 
 const UserPortfolioListing = (props) => {
   console.log(props);
@@ -7,18 +8,20 @@ const UserPortfolioListing = (props) => {
   const [userList, setUserList] = useState({response: []});
 
   useEffect(() => {
-    const apiURL =
-      process.env.REACT_APP_HTTP_API_URL + constants.USER_URL.USER_LIST_URL;
-    fetch(apiURL, {
-      method: "GET",
-    })
-      .then((response) => {
-        return response.json();
-      })
-      .then((data) => {
-        setUserList(data);
-      })
-      .catch((error) => console.log(error));
+
+      const client = new W3CWebSocket(process.env.REACT_APP_WS_API_URL + constants.USER_URL.USER_LIST_URL);
+      client.onopen = () => {
+          console.log('Connection Established');
+      }
+    
+      client.onmessage = (message) => {
+          const responseObj = JSON.parse(message.data)
+          setUserList(responseObj);
+      }
+
+      client.onclose = () => {
+        console.log('Connection Closed');
+      }
   }, []);
 
   return (
