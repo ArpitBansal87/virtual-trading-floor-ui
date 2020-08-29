@@ -2,32 +2,42 @@ import React, { useState } from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import Card from "@material-ui/core/Card";
 import CardActionArea from "@material-ui/core/CardActionArea";
-import CardActions from "@material-ui/core/CardActions";
 import CardContent from "@material-ui/core/CardContent";
 import CardMedia from "@material-ui/core/CardMedia";
 import Button from "@material-ui/core/Button";
 import Typography from "@material-ui/core/Typography";
+import Switch from "@material-ui/core/Switch";
+
+import TextField from "@material-ui/core/TextField";
+import { CardActions } from "@material-ui/core";
 
 const useStyles = makeStyles({
   root: {
     maxWidth: 245,
   },
   logoName: {
-    height: 100,
-    width: 100,
+    height: 80,
+    width: '100%',
+    objectFit: 'contain',
   },
+  switchDivClass: {
+    display: "inline-block",
+    float: 'left',
+  },
+  qtyField: {
+    maxWidth: '4.5rem',
+    marginLeft: '1rem',
+  }
 });
 
 const Stock = (props) => {
-  // TODO: give the user the option to cancel the trade
-
   const [openForTrade, setOpenForTrade] = useState(false);
   const [quantity, setQuantity] = useState(0);
   const [tradeType, setTradeType] = useState("BUY");
+  const [isTradeTypeBuy, setIsTradeTypeBuy] = useState(true);
 
   const handleTradeToggle = () => {
     if (openForTrade) {
-      console.log("Place the call for trade");
       handleTradeConfirmation();
     }
     setOpenForTrade(!openForTrade);
@@ -67,10 +77,6 @@ const Stock = (props) => {
       });
   };
 
-  const handleTradeTypeToggle = (event) => {
-    setTradeType(event.target.value);
-  };
-
   const classes = useStyles();
 
   return (
@@ -84,60 +90,55 @@ const Stock = (props) => {
             image={props.data.logoImage}
             title={props.data.symbol}
           />
-          <CardContent>
+        </CardActionArea>
+        <CardContent>
+          <div className={openForTrade ? classes.shareInfoShift : classes.shareInfo}>
             <Typography gutterBottom variant="h5" component="h2">
               {props.data.companyName}
             </Typography>
             <Typography variant="body2" color="textSecondary" component="p">
               $ {props.data.sharePrice}
             </Typography>
-          </CardContent>
-          <button onClick={handleTradeToggle}>
-            {openForTrade ? "Confirm" : "Buy/Sell"}
-          </button>
-
+          </div>
           {openForTrade ? (
             <>
-              <label>
-                <input
-                  type="radio"
-                  name={props.data.symbol + "-trade"}
-                  value="BUY"
-                  onChange={handleTradeTypeToggle}
-                  checked={tradeType === "BUY"}
-                ></input>
-                Buy
-              </label>
-              <input
+              <div className={classes.switchDivClass}>
+                <label>Sell</label>
+                <Switch
+                  checked={isTradeTypeBuy}
+                  onChange={(e) => setIsTradeTypeBuy(e.target.checked)}
+                />
+                <label>Buy</label>
+              </div>
+              <TextField
+                id={props.data.symbol + "-qty"}
+                label="Quantity"
                 type="number"
-                name={props.data.symbol + "-qty"}
                 value={quantity}
+                InputLabelProps={{
+                  shrink: true,
+                }}
                 onChange={handleQuantityChange}
-              ></input>
-              <label>
-                <input
-                  type="radio"
-                  name={props.data.symbol + "-trade"}
-                  value="SELL"
-                  onChange={handleTradeTypeToggle}
-                  checked={tradeType === "SELL"}
-                ></input>
-                Sell
-              </label>
-              <button onClick={cancelTrade}>Cancel</button>
+                size="small"
+                required
+                className={classes.qtyField}
+              />
             </>
           ) : (
             <></>
           )}
-        </CardActionArea>
+        </CardContent>
         <CardActions>
-          {/* <Button size="small" color="primary">
-          Trade
-        </Button>
-        <Button size="small" color="primary">
-          Learn More
-        </Button> */}
-          
+          <div>
+            <Button onClick={handleTradeToggle} type="submit">
+              {openForTrade ? "Confirm" : "Buy/Sell"}
+            </Button>
+            {openForTrade ? (
+              <Button onClick={cancelTrade}>Cancel</Button>
+            ) : (
+              <></>
+            )}
+          </div>
         </CardActions>
       </Card>
     </>
