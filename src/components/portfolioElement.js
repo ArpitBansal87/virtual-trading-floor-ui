@@ -15,7 +15,7 @@ const PortFolioElement = (props) => {
   const classes = useStyles();
   return (
     <Card className={classes.root}>
-      <CardHeader>{props.data.stockIdentifier}</CardHeader>
+      <CardHeader title={props.data.stockIdentifier}></CardHeader>
       <CardContent>
         <Typography>Quantity: ${props.data.tradeQuantity}</Typography>
         <Typography>Avg Stock Price: ${props.data.avgPrice}</Typography>

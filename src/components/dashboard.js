@@ -17,10 +17,23 @@ const useStyles = makeStyles((theme) => ({
     textAlign: "center",
     color: theme.palette.text.secondary,
   },
+  md: {
+    [theme.breakpoints.up("md")]: {
+      maxHeight: "65vh",
+      overflowY: "scroll",
+    },
+  },
+  xs: {
+    [theme.breakpoints.up("md")]: {
+      maxHeight: "35vh",
+      overflowY: "scroll",
+    },
+  }
 }));
 
 const Dashboard = () => {
   const classes = useStyles();
+
 
   return (
     <div>
@@ -29,18 +42,18 @@ const Dashboard = () => {
         <Container>
           <div className="container-content">
             <Grid container spacing={3}>
-              <Grid item xs={12} sm={8}>
-                <Paper className={classes.paper}>
+              <Grid item xs={12} md={9}>
+                <Paper className={`${classes.paper} ${classes.md}`}>
                   <StockMarket></StockMarket>
                 </Paper>
               </Grid>
-              <Grid item xs={12} sm={4}>
-                <Paper className={classes.paper}>
+              <Grid item xs={12} md={3}>
+                <Paper className={`${classes.paper} ${classes.md}`}>
                   <PortfolioListing></PortfolioListing>
                 </Paper>
               </Grid>
               <Grid item xs={12}>
-                <Paper className={classes.paper}>
+                <Paper className={`${classes.paper} ${classes.xs}`}>
                   <UserPortfolioListing></UserPortfolioListing>
                 </Paper>
               </Grid>
