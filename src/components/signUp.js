@@ -1,13 +1,17 @@
-import React from "react";
+import React, {useState} from "react";
 import useSignInForm from "../hooks/CustomHooks";
 import * as constants from "./../constants/URLConstants";
 import { useHistory } from "react-router-dom";
 import TextField from "@material-ui/core/TextField";
 import Button from "@material-ui/core/Button";
 import "./../css/signInPage.css";
+import { Typography } from "@material-ui/core";
 
 const SignUp = () => {
   let history = useHistory();
+  const [error, setError] = useState(false);
+  const [successMsg, setSuccessMsg] = useState(false);
+
   const signUp = () => {
     const formSubmitURL =
       process.env.REACT_APP_HTTP_API_URL + constants.AUTHENTICATION_URL.SIGN_UP;
@@ -24,7 +28,14 @@ const SignUp = () => {
         return response.json();
       })
       .then((data) => {
-        if (data.isAuthenticated) history.push("/dashboard");
+        if (data.isUserSignUpSuccessfull) {
+          // history.push("/dashboard");
+          setSuccessMsg(true);
+          setError(false);
+        } else {
+          setError(true);
+          setSuccessMsg(false);
+        }
       });
   };
 
@@ -78,6 +89,8 @@ const SignUp = () => {
           Sign Up
         </Button>
       </div>
+      {error ? <Typography color="error"> Incorrect credentials provided</Typography> : ''}
+      {successMsg ? <Typography color="primary"> Sign up successfull</Typography> : ''}
     </form>
   );
 };

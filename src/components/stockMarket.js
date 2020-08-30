@@ -20,7 +20,8 @@ const useStyles = makeStyles({
     display: "flex",
     flexWrap: "wrap",
     padding: 0,
-    margin: 0
+    margin: 0,
+    width: '100%',
   },
   liValue: {
     maxHeight: 400,
