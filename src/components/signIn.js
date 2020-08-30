@@ -1,12 +1,14 @@
-import React from "react";
+import React, {useState} from "react";
 import useSignInForm from "../hooks/CustomHooks";
 import { useHistory } from "react-router-dom";
 import TextField from "@material-ui/core/TextField";
 import Button from "@material-ui/core/Button";
 import "./../css/signInPage.css";
+import { Typography } from "@material-ui/core";
 
 const SignIn = (props) => {
   let history = useHistory();
+  const [error, setError] = useState(false);
 
   const signIn = () => {
     const formSubmitURL = process.env.REACT_APP_HTTP_API_URL + "/login";
@@ -22,9 +24,16 @@ const SignIn = (props) => {
       })
       .then((data) => {
         if (data.isAuthenticated) {
+          setError(false);
           sessionStorage.setItem("userId", data.userIdentifier);
           sessionStorage.setItem("userData", JSON.stringify(data.userData));
           history.push("/dashboard");
+        }
+        else {
+          setError(true);
+          setTimeout(() => {
+            setError(false);
+          }, 3000);
         }
       });
   };
@@ -59,6 +68,7 @@ const SignIn = (props) => {
           Sign In
         </Button>
       </div>
+      {error ? <Typography color="error"> Incorrect credentials provided</Typography> : ''}
     </form>
   );
 };

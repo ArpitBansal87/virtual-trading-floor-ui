@@ -29,7 +29,7 @@ const useStyles = makeStyles((theme) => ({
 const PortFolioElement = (props) => {
   const classes = useStyles();
   const pLAmt = (props.data.currentPrice - props.data.avgPrice).toFixed(2);
-  const pLPercentage = (pLAmt / props.data.avgPrice).toFixed(4) * 100;
+  const pLPercentage = ((pLAmt / props.data.avgPrice).toFixed(4) * 100).toFixed(2);
   const ltp = Number.parseFloat(props.data.currentPrice).toFixed(2);
   const avgPrice = Number.parseFloat(props.data.avgPrice).toFixed(2);
   return (
