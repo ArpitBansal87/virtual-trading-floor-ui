@@ -73,6 +73,7 @@ const SignUp = () => {
           label="Username"
           onChange={handleInputChange}
           value={inputs.userName}
+          required
         />
       </div>
       <div className="form-element">
@@ -82,6 +83,7 @@ const SignUp = () => {
           label="Password"
           onChange={handleInputChange}
           value={inputs.password}
+          required
         />
       </div>
       <div className="form-element">

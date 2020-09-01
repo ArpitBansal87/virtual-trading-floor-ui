@@ -52,6 +52,7 @@ const SignIn = (props) => {
           label="Username"
           onChange={handleInputChange}
           value={inputs.userName}
+          required
         />
       </div>
       <div className="form-element">
@@ -61,6 +62,7 @@ const SignIn = (props) => {
           label="Password"
           onChange={handleInputChange}
           value={inputs.password}
+          required
         />
       </div>
       <div className="form-element">

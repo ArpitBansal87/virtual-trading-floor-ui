@@ -111,11 +111,12 @@ const UserPortfolioCard = (props) => {
               )}
             </Grid>
             <Grid item style={{ margin: "auto" }}>
-              {props.data.current > props.data.invested ? (
+              { props.data.pAndL !== 0 ?
+              props.data.current > props.data.invested ? (
                 <TrendingUpIcon fontSize="large" style={{ color: "green" }} />
               ) : (
                 <TrendingDownIcon fontSize="large" style={{ color: "red" }} />
-              )}
+              ): '' }
               <Typography>{props.data.pAndL}%</Typography>
             </Grid>
           </Grid>
