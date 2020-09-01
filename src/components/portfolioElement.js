@@ -53,7 +53,7 @@ const PortFolioElement = (props) => {
                 <Typography variant="caption">LTP: {ltp}</Typography>
               </div>
               <Typography
-                variant="subtitle"
+                variant="subtitle1"
                 style={
                   pLAmt > 0
                     ? { color: "darkgreen" }

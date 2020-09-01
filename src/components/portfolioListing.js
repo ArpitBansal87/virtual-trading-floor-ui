@@ -35,7 +35,7 @@ const PortfolioListing = () => {
         current: currentValue,
         invested: investedValue,
       });
-      sessionStorage.setItem('portfolios', JSON.stringify(responseObj));
+      sessionStorage.setItem("portfolios", JSON.stringify(responseObj));
     };
 
     client.onclose = () => {
@@ -46,7 +46,13 @@ const PortfolioListing = () => {
     <>
       <div>
         <h3>Holdings({portfolioStocks.response.length}): </h3>
-        <div style={{ textAlign: "left", display: 'flex', justifyContent: 'space-around' }}>
+        <div
+          style={{
+            textAlign: "left",
+            display: "flex",
+            justifyContent: "space-around",
+          }}
+        >
           <div>
             <Typography>
               Current: {Number.parseFloat(holdingsValue.current).toFixed(2)}
@@ -57,7 +63,7 @@ const PortfolioListing = () => {
           </div>
           <div>
             {holdingsValue.current > holdingsValue.invested ? (
-              <TrendingUpIcon fontSize="large" style={{ color: "green",  }} />
+              <TrendingUpIcon fontSize="large" style={{ color: "green" }} />
             ) : (
               <TrendingDownIcon fontSize="large" style={{ color: "red" }} />
             )}
@@ -67,7 +73,10 @@ const PortfolioListing = () => {
           <h3>No Portfolios Loaded</h3>
         ) : (
           portfolioStocks.response.map((portfolioStock, index) => (
-            <PortFolioElement data={portfolioStock}></PortFolioElement>
+            <PortFolioElement
+              key={"portfolio-" + index}
+              data={portfolioStock}
+            ></PortFolioElement>
           ))
         )}
       </div>
