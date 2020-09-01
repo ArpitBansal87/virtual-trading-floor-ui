@@ -25,7 +25,7 @@ const useStyles = makeStyles((theme) => ({
   },
   xs: {
     [theme.breakpoints.up("md")]: {
-      maxHeight: "35vh",
+      maxHeight: "45vh",
       overflowY: "scroll",
     },
   }

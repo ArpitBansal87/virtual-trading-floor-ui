@@ -35,6 +35,7 @@ const PortfolioListing = () => {
         current: currentValue,
         invested: investedValue,
       });
+      sessionStorage.setItem('portfolios', JSON.stringify(responseObj));
     };
 
     client.onclose = () => {
