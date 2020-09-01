@@ -29,8 +29,8 @@ const useStyles = makeStyles({
     marginLeft: "1rem",
   },
   removeBoxShadow: {
-    boxShadow: 'none'
-  }
+    boxShadow: "none",
+  },
 });
 
 const Stock = (props) => {
@@ -62,6 +62,12 @@ const Stock = (props) => {
   };
 
   const handleTradeConfirmation = () => {
+    const userSessionObj = JSON.parse(sessionStorage.getItem("userData"));
+    const tradeValue = (Number.parseFloat(props.data.sharePrice) * Number.parseInt(quantity));
+    const newFundsValue = isTradeTypeBuy ? userSessionObj.funds - tradeValue : userSessionObj.funds + tradeValue      
+      
+    userSessionObj.funds = newFundsValue;
+    sessionStorage.setItem("userData", userSessionObj);
     const dataObj = {
       userIdentifier: sessionStorage.getItem("userId"),
       stockSymbol: props.data.symbol,
@@ -69,6 +75,7 @@ const Stock = (props) => {
       quantity: quantity,
       buyPrice: props.data.sharePrice,
       totalShares: props.data.totalShares,
+      funds: newFundsValue,
     };
     const formSubmitURL = process.env.REACT_APP_HTTP_API_URL + "/setPosition";
     fetch(formSubmitURL, {
@@ -97,10 +104,12 @@ const Stock = (props) => {
       const portfolioSessionStorage = JSON.parse(
         sessionStorage.getItem("portfolios")
       );
-      let test = portfolioSessionStorage.response.find(
-        (ele) => ele.stockIdentifier === props.data.symbol
-      );
-      sellQtyValue = test.tradeQuantity;
+      if (portfolioSessionStorage.response.length !== 0) {
+        let test = portfolioSessionStorage.response.find(
+          (ele) => ele.stockIdentifier === props.data.symbol
+        );
+        sellQtyValue = test.tradeQuantity;
+      }
     }
     const maxQ = changedValue
       ? Number.parseInt(
@@ -109,20 +118,21 @@ const Stock = (props) => {
         )
       : sellQtyValue;
     setMaxQuantity(maxQ);
-    isQtyDisabled(changedValue);
+    isQtyDisabled(changedValue, maxQ);
   };
 
-  const isQtyDisabled = (value) => {
+  const isQtyDisabled = (value, maxQValue) => {
     const portfolioSessionStorage = JSON.parse(
       sessionStorage.getItem("portfolios")
     );
-    const isQtyDisabledValue = value === 'true'
-      ? maxQuantity === 0
-        ? true
-        : false
-      : !portfolioSessionStorage.response.some(
-          (ele) => ele.stockIdentifier === props.data.symbol
-        );
+    const isQtyDisabledValue =
+      value === true
+        ? maxQValue === 0
+          ? true
+          : false
+        : !portfolioSessionStorage.response.some(
+            (ele) => ele.stockIdentifier === props.data.symbol
+          );
     setQtyDisabled(isQtyDisabledValue);
   };
 
@@ -130,7 +140,11 @@ const Stock = (props) => {
 
   return (
     <>
-      <Card className={`${classes.root} ${props.isInsideDialog ? classes.removeBoxShadow : ''}`}>
+      <Card
+        className={`${classes.root} ${
+          props.isInsideDialog ? classes.removeBoxShadow : ""
+        }`}
+      >
         <CardActionArea>
           <CardMedia
             component="img"
