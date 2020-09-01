@@ -6,7 +6,7 @@ import MaterialTable from "material-table";
 import { Button } from "@material-ui/core";
 import ViewModuleIcon from "@material-ui/icons/ViewModule";
 import ViewStreamIcon from "@material-ui/icons/ViewStream";
-import { blue } from "@material-ui/core/colors";
+import Dialog from "@material-ui/core/Dialog";
 
 const useStyles = makeStyles({
   root: {
@@ -21,7 +21,7 @@ const useStyles = makeStyles({
     flexWrap: "wrap",
     padding: 0,
     margin: 0,
-    width: '100%',
+    width: "100%",
   },
   liValue: {
     maxHeight: 400,
@@ -39,6 +39,7 @@ const StockMarket = () => {
 
   const [stocksList, setStocksList] = useState({ response: [] });
   const [gridView, setGridView] = useState(true);
+  const [stockData, setStockData] = useState({});
 
   useEffect(() => {
     const client = new W3CWebSocket(
@@ -53,6 +54,11 @@ const StockMarket = () => {
       setStocksList(responseObj);
     };
   }, []);
+
+  const handleClose = () => {
+    setStockData({});
+  };
+
   return (
     <>
       <div>
@@ -73,20 +79,34 @@ const StockMarket = () => {
         <h3>Stocks</h3>
       </div>
 
-      {gridView ? (
-          <div className={classes.ulValue}>
-            {stocksList.response.length === 0 ? (
-              <div>
-                <h3>No Stocks Loaded</h3>
-              </div>
-            ) : (
-              stocksList.response.map((stock, index) => (
-                <div key={index} className={classes.liValue}>
-                  <Stock data={stock} />
-                </div>
-              ))
-            )}
+      {Object.keys(stockData).length !== 0 ? (
+        <Dialog
+          onClose={handleClose}
+          aria-labelledby="simple-dialog-title"
+          open={Object.keys(stockData).length !== 0}
+        >
+          <div className="removeBoxShadow" style={{padding: '2rem'}}>
+            <Stock data={stockData} isInsideDialog={true}></Stock>
           </div>
+        </Dialog>
+      ) : (
+        <></>
+      )}
+
+      {gridView ? (
+        <div className={classes.ulValue}>
+          {stocksList.response.length === 0 ? (
+            <div>
+              <h3>No Stocks Loaded</h3>
+            </div>
+          ) : (
+            stocksList.response.map((stock, index) => (
+              <div key={index} className={classes.liValue}>
+                <Stock data={stock} />
+              </div>
+            ))
+          )}
+        </div>
       ) : (
         <div style={{ maxWidth: "100%" }}>
           <MaterialTable
@@ -109,7 +129,11 @@ const StockMarket = () => {
                 field: "tradeOption",
                 render: (data) => (
                   <>
-                    <Button size="small" color="primary">
+                    <Button
+                      size="small"
+                      color="primary"
+                      onClick={() => setStockData(data)}
+                    >
                       Trade
                     </Button>
                   </>

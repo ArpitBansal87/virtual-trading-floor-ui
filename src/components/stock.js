@@ -17,47 +17,55 @@ const useStyles = makeStyles({
   },
   logoName: {
     height: 80,
-    width: '100%',
-    objectFit: 'contain',
+    width: "100%",
+    objectFit: "contain",
   },
   switchDivClass: {
     display: "inline-block",
-    float: 'left',
+    float: "left",
   },
   qtyField: {
-    maxWidth: '4.5rem',
-    marginLeft: '1rem',
+    maxWidth: "4.5rem",
+    marginLeft: "1rem",
+  },
+  removeBoxShadow: {
+    boxShadow: 'none'
   }
 });
 
 const Stock = (props) => {
   const [openForTrade, setOpenForTrade] = useState(false);
   const [quantity, setQuantity] = useState(0);
-  const [tradeType, setTradeType] = useState("BUY");
   const [isTradeTypeBuy, setIsTradeTypeBuy] = useState(true);
+  const [maxQuantity, setMaxQuantity] = useState(0);
+  const [qtyDisabled, setQtyDisabled] = useState(true);
 
   const handleTradeToggle = () => {
     if (openForTrade) {
       handleTradeConfirmation();
     }
     setOpenForTrade(!openForTrade);
+    settingCorrectMaxQuantity(true);
   };
 
   const handleQuantityChange = (event) => {
-    setQuantity(event.target.value);
+    if (maxQuantity + 1 > event.target.value) {
+      setQuantity(event.target.value);
+    }
   };
 
   const cancelTrade = () => {
     setQuantity(0);
     setOpenForTrade(!openForTrade);
-    setTradeType("BUY");
+    setIsTradeTypeBuy(true);
+    // setTradeType("BUY");
   };
 
   const handleTradeConfirmation = () => {
     const dataObj = {
       userIdentifier: sessionStorage.getItem("userId"),
       stockSymbol: props.data.symbol,
-      tradeType: tradeType,
+      tradeType: isTradeTypeBuy ? "BUY" : "SELL",
       quantity: quantity,
       buyPrice: props.data.sharePrice,
       totalShares: props.data.totalShares,
@@ -77,11 +85,52 @@ const Stock = (props) => {
       });
   };
 
+  const verifyQuantityOption = (value) => {
+    settingCorrectMaxQuantity(value);
+    setIsTradeTypeBuy(value);
+  };
+
+  const settingCorrectMaxQuantity = (changedValue) => {
+    const sessionData = JSON.parse(sessionStorage.getItem("userData"));
+    let sellQtyValue = 0;
+    if (!changedValue) {
+      const portfolioSessionStorage = JSON.parse(
+        sessionStorage.getItem("portfolios")
+      );
+      let test = portfolioSessionStorage.response.find(
+        (ele) => ele.stockIdentifier === props.data.symbol
+      );
+      sellQtyValue = test.tradeQuantity;
+    }
+    const maxQ = changedValue
+      ? Number.parseInt(
+          Number.parseFloat(sessionData.funds) /
+            Number.parseFloat(props.data.sharePrice)
+        )
+      : sellQtyValue;
+    setMaxQuantity(maxQ);
+    isQtyDisabled(changedValue);
+  };
+
+  const isQtyDisabled = (value) => {
+    const portfolioSessionStorage = JSON.parse(
+      sessionStorage.getItem("portfolios")
+    );
+    const isQtyDisabledValue = value === 'true'
+      ? maxQuantity === 0
+        ? true
+        : false
+      : !portfolioSessionStorage.response.some(
+          (ele) => ele.stockIdentifier === props.data.symbol
+        );
+    setQtyDisabled(isQtyDisabledValue);
+  };
+
   const classes = useStyles();
 
   return (
     <>
-      <Card className={classes.root}>
+      <Card className={`${classes.root} ${props.isInsideDialog ? classes.removeBoxShadow : ''}`}>
         <CardActionArea>
           <CardMedia
             component="img"
@@ -92,7 +141,11 @@ const Stock = (props) => {
           />
         </CardActionArea>
         <CardContent>
-          <div className={openForTrade ? classes.shareInfoShift : classes.shareInfo}>
+          <div
+            className={
+              openForTrade ? classes.shareInfoShift : classes.shareInfo
+            }
+          >
             <Typography gutterBottom variant="h5" component="h2">
               {props.data.companyName}
             </Typography>
@@ -106,7 +159,7 @@ const Stock = (props) => {
                 <label>Sell</label>
                 <Switch
                   checked={isTradeTypeBuy}
-                  onChange={(e) => setIsTradeTypeBuy(e.target.checked)}
+                  onChange={(e) => verifyQuantityOption(e.target.checked)}
                 />
                 <label>Buy</label>
               </div>
@@ -115,13 +168,14 @@ const Stock = (props) => {
                 label="Quantity"
                 type="number"
                 value={quantity}
+                disabled={qtyDisabled}
                 InputLabelProps={{
                   shrink: true,
                 }}
                 onChange={handleQuantityChange}
                 size="small"
-                required
                 className={classes.qtyField}
+                InputProps={{ inputProps: { max: maxQuantity, min: 0 } }}
               />
             </>
           ) : (
