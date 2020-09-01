@@ -37,34 +37,42 @@ const UserPortfolioListing = (props) => {
       // eslint-disable-next-line array-callback-return
       responseObj.response.map((userObj) => {
         if (userObj.portfolio !== undefined) {
-          userObj.current = (userObj.portfolio
-            .map((ele) =>
-              Number.parseFloat(
-                Number.parseFloat(ele.currentPrice) * ele.tradeQuantity
-              ).toFixed(2)
-            )
-            .reduce((firstEle, secondEle) => {
-              return firstEle + Number.parseFloat(secondEle);
-            }, 0)).toFixed(2);
-          userObj.invested = (userObj.portfolio
-            .map((ele) =>
-              Number.parseFloat(
-                Number.parseFloat(ele.avgPrice) * ele.tradeQuantity
-              ).toFixed(2)
-            )
-            .reduce((firstEle, secondEle) => {
-              return firstEle + Number.parseFloat(secondEle);
-            }, 0)).toFixed(2);
-          userObj.pAndL = ((userObj.current - userObj.invested) / (userObj.invested / 100)).toFixed(2);
+          userObj.current = Number.parseFloat(
+            userObj.portfolio
+              .map((ele) =>
+                Number.parseFloat(
+                  Number.parseFloat(ele.currentPrice) * ele.tradeQuantity
+                ).toFixed(2)
+              )
+              .reduce((firstEle, secondEle) => {
+                return firstEle + Number.parseFloat(secondEle);
+              }, 0)
+          ).toFixed(2);
+          userObj.invested = Number.parseFloat(
+            userObj.portfolio
+              .map((ele) =>
+                Number.parseFloat(
+                  Number.parseFloat(ele.avgPrice) * ele.tradeQuantity
+                ).toFixed(2)
+              )
+              .reduce((firstEle, secondEle) => {
+                return firstEle + Number.parseFloat(secondEle);
+              }, 0)
+          ).toFixed(2);
+          userObj.pAndL = (
+            (userObj.current - userObj.invested) /
+            (userObj.invested / 100)
+          ).toFixed(2);
         } else {
           userObj.current = 0;
           userObj.invested = 0;
-          userObj.pAndL = 0
+          userObj.pAndL = 0;
         }
       });
 
       responseObj.response.sort(function (a, b) {
-        return a.current + a.funds > b.current + b.funds
+        return Number.parseFloat(a.current) + Number.parseFloat(a.funds) >
+          Number.parseFloat(b.current) + Number.parseFloat(b.funds)
           ? -1
           : a.current + a.funds < b.current + b.funds
           ? 1

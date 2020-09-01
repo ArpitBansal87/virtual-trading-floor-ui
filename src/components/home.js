@@ -10,6 +10,7 @@ import Tabs from "@material-ui/core/Tabs";
 import Tab from "@material-ui/core/Tab";
 import Container from "@material-ui/core/Container";
 import Box from "@material-ui/core/Box";
+import StockGallery from "./stockGallery";
 
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
@@ -56,13 +57,13 @@ const Home = () => {
             src="https://firebasestorage.googleapis.com/v0/b/backup-vtf.appspot.com/o/3611502124_9e607890-cf40-4384-97b7-fee6fca361b3.png?alt=media&token=91b5600c-2c9f-4635-af4b-8dba7761b878"
           />
         </header>
-        <Box pt={4}>
+        <Box pt={10}>
           <Container maxWidth="lg">
-            <Grid container justify="space-around">
-              <Grid item>
-                <Paper>this is for stocks block</Paper>
-              </Grid>
-              <Grid item>
+            <Grid container justify="center">
+              {/* <Grid item>
+                <StockGallery></StockGallery>
+              </Grid> */}
+              <Grid item >
                 <Paper>
                   <AppBar position="static">
                     <Tabs
