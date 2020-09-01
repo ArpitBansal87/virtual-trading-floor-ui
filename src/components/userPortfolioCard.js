@@ -93,11 +93,22 @@ const UserPortfolioCard = (props) => {
                   Funds: ${props.data.funds}
                 </Typography>
               </div>
-              <div style={{ width: "100%" }}>
-                <Typography variant="caption">
-                  Investment: ${props.data.current}
-                </Typography>
-              </div>
+              {props.data.current !== 0 ? (
+                <>
+                  <div style={{ width: "100%" }}>
+                    <Typography variant="caption">
+                      Cur. Val: ${props.data.current}
+                    </Typography>
+                  </div>
+                  <div style={{ width: "100%" }}>
+                    <Typography variant="caption">
+                      Investment: ${props.data.invested}
+                    </Typography>
+                  </div>
+                </>
+              ) : (
+                <></>
+              )}
             </Grid>
             <Grid item style={{ margin: "auto" }}>
               {props.data.current > props.data.invested ? (
@@ -105,7 +116,7 @@ const UserPortfolioCard = (props) => {
               ) : (
                 <TrendingDownIcon fontSize="large" style={{ color: "red" }} />
               )}
-              <Typography>{props.data.profit}%</Typography>
+              <Typography>{props.data.pAndL}%</Typography>
             </Grid>
           </Grid>
         </Grid>
