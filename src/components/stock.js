@@ -67,7 +67,7 @@ const Stock = (props) => {
     const newFundsValue = isTradeTypeBuy ? userSessionObj.funds - tradeValue : userSessionObj.funds + tradeValue      
       
     userSessionObj.funds = newFundsValue;
-    sessionStorage.setItem("userData", userSessionObj);
+    sessionStorage.setItem("userData", JSON.stringify(userSessionObj));
     const dataObj = {
       userIdentifier: sessionStorage.getItem("userId"),
       stockSymbol: props.data.symbol,
