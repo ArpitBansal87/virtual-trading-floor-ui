@@ -70,7 +70,7 @@ const PortfolioListing = () => {
           </div>
         </div>
         {portfolioStocks.response.length === 0 ? (
-          <h3>No Portfolios Loaded</h3>
+          <h4>Your portfolio is empty</h4>
         ) : (
           portfolioStocks.response.map((portfolioStock, index) => (
             <PortFolioElement

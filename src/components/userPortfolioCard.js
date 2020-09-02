@@ -90,7 +90,7 @@ const UserPortfolioCard = (props) => {
               </div>
               <div style={{ width: "100%" }}>
                 <Typography variant="caption">
-                  Funds: ${props.data.funds}
+                  Funds: ${Number.parseFloat(props.data.funds).toFixed(2)}
                 </Typography>
               </div>
               {props.data.current !== 0 ? (

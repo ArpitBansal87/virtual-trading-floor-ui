@@ -97,7 +97,7 @@ const StockMarket = () => {
         <div className={classes.ulValue}>
           {stocksList.response.length === 0 ? (
             <div>
-              <h3>No Stocks Loaded</h3>
+              <h3>Loading stocks...</h3>
             </div>
           ) : (
             stocksList.response.map((stock, index) => (

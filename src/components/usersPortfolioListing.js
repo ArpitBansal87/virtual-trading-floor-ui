@@ -112,7 +112,7 @@ const UserPortfolioListing = (props) => {
       </div>
       <div style={{ display: "flex", flexWrap: "wrap " }}>
         {userList.response.length === 0 ? (
-          <h3>No User found</h3>
+          <h3>Loading list of users...</h3>
         ) : (
           userList.response
             .filter((ele) => {
